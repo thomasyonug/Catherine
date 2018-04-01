@@ -1,0 +1,3 @@
+signature SOCKETCONN =
+sig
+end

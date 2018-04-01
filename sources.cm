@@ -1,0 +1,15 @@
+Group is
+    $/basis.cm
+    ./src/main.sml
+    ./src/server/server.sml
+
+    ./src/poll/ThreadPoll.sig
+    ./src/poll/DefaultPoll.sml
+
+    ./src/httpParser/HttpParser.sig
+    ./src/httpParser/DefaultParser.sml
+
+    ./src/conn/SocketConn.sig
+    ./src/conn/DefaultConn.sml
+
+    ./src/util/util.sig
