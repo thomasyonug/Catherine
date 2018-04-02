@@ -5,5 +5,5 @@ functor Server (
     structure Poll : THREADPOLL
 ) =
 struct
-
+    fun listen port cb = Conn.listen port cb;
 end
