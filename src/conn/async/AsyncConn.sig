@@ -1,7 +1,8 @@
 signature ASYNCCONN =
 sig
-    structure Http: HTTPPARSER
 
-    val listen: int -> (Http.Request -> unit) -> unit
+    val listen: int -> unit
+
+    val accept: Socket.sock -> (Socket.sock * Socket.sock) option
 
 end
