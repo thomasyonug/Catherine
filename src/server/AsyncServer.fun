@@ -1,6 +1,6 @@
 
 functor AsyncServer (
-    structure Eventloop: EVENtLOOP
+    structure Eventloop: EVENTLOOP
     structure AsyncConn: ASYNCCONN
     structure AsyncIO: ASYNCIO
     structure HttpParser: HTTPPARSER
@@ -8,30 +8,33 @@ functor AsyncServer (
 ): ASYNCSERVER =
 struct
 
+    type REQUEST = HttpParser.REQUEST
+    type RESPONSE = HttpParser.RESPONSE
     val eventQueue = Eventloop.initQueue()
     type EVENT = Eventloop.EVENT
+    val read = Reader.initReader()
 
 
     fun loop mainSock connSocks app eq = let
-        val connSocks = case AsyncConn.accept mainSock 
+        val newConnSocks = case AsyncConn.accept mainSock 
                                 of NONE => connSocks 
-                                 | SOME (s, sa) => connSocks :: s;
-        val (rds, wrs, exs) = AsyncConn.select connSocks;
-        val msgs = Reader.read (rds);
+                                 | SOME (s, sa) => (s :: connSocks)
+        val {rds, wrs, exs} = AsyncIO.select newConnSocks;
+        val msgs = map (fn sock => (read sock, sock)) rds;
         val requests = map (fn (msg, sock) => (HttpParser.parse msg, sock)) msgs
-        val events = map (fn (req, sock) => (app req, sock)) requests
+        val events = map (fn (req, sock) => app req) requests
         val newQueue = Eventloop.append eq events;
     in
-        Eventloop.exec newQueue;
-        loop mainSock connSocks app (Eventloop.recovery newQueue) 
+        loop mainSock (AsyncConn.recovery newConnSocks) app (Eventloop.exec newQueue) 
     end
 
 
 
 
     fun listen port app = let
-        val mainSock = AsyncConn.listen port
+        val mainSock = AsyncConn.socket();
+        val () = AsyncConn.listen mainSock port
     in
-        loop mainSock [] app eq
+        loop mainSock [] app eventQueue
     end
 end

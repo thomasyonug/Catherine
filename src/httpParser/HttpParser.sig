@@ -1,8 +1,8 @@
 signature HTTPPARSER =
 sig
-    type Request
-    type Response
+    type REQUEST
+    type RESPONSE
 
-    val parse: string -> Request
-    val newResponse: unit -> Response
+    val parse: string -> REQUEST
+    val newResponse: unit -> RESPONSE
 end

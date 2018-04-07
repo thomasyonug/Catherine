@@ -1,7 +1,7 @@
 Group is
     $/basis.cm
-    (* ./src/main.sml *)
-    ./src/server/Asyncserver.sig
+    ./src/server/AsyncServer.sig
+    ./src/server/AsyncServer.fun
 
     ./src/poll/ThreadPoll.sig
 
