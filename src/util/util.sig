@@ -1,5 +1,0 @@
-signature UTIL =
-sig
-
-
-end

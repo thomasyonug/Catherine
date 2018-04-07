@@ -1,7 +1,7 @@
 signature ASYNCCONN =
 sig
 
-    val listen: 'mode INetSock.stream_sock -> int -> unit
+    val listen: (INetSock.inet, Socket.passive Socket.stream) Socket.sock -> int -> unit
 
     val accept: (INetSock.inet, Socket.passive Socket.stream) Socket.sock -> 
                     ((INetSock.inet, Socket.active Socket.stream) Socket.sock * INetSock.inet Socket.sock_addr) option

@@ -1,14 +1,17 @@
-signature EVENTLOOP =
-sig
+structure Eventloop: EVENTLOOP =
+struct
+    
     datatype EVENT = Doing of unit -> (EVENT * (INetSock.inet, Socket.active Socket.stream) Socket.sock)
                    | Done of (INetSock.inet, Socket.active Socket.stream) Socket.sock
                    | Empty
+
     type Queue = EVENT list
-    val initQueue: unit -> Queue
+
+    fun initQueue () = []
+    fun append hlst blst = hlst @ blst
+
+    fun exec queue = queue
 
 
-    val append: EVENT list -> EVENT list -> EVENT list
-    (* val recovery: EVENT list -> EVENT list *)
-    val exec: EVENT list -> EVENT list
 
 end

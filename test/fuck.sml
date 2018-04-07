@@ -1,7 +1,10 @@
-functor Fuck (type a) =
+
+
+structure a =
 struct
-  type b = a
+    infix |> ;
+    fun (a |> b) = a + b; 
 end
 
 
-fun aGen () = Fuck (type a = int)
+

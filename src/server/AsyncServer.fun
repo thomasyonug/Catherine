@@ -33,8 +33,8 @@ struct
 
     fun listen port app = let
         val mainSock = AsyncConn.socket();
-        val () = AsyncConn.listen mainSock port
     in
+        AsyncConn.listen mainSock port;
         loop mainSock [] app eventQueue
     end
 end
