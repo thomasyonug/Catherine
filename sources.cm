@@ -12,7 +12,7 @@ is
     ./src/poll/ThreadPoll.sig
 
     ./src/httpParser/HttpParser.sig
-    (* ./src/httpParser/HttpParser.sml *)
+    ./src/httpParser/HttpParser.sml
 
     ./src/conn/async/AsyncConn.sig
     ./src/conn/async/AsyncConn.sml

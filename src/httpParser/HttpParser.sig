@@ -4,5 +4,4 @@ sig
     type RESPONSE
 
     val parse: string -> REQUEST
-    val newResponse: unit -> RESPONSE
 end

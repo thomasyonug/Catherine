@@ -7,7 +7,7 @@ struct
             rds = sockDescs,
             wrs = sockDescs,
             exs = sockDescs,
-            timeout = NONE
+            timeout = SOME Time.zeroTime
         }
     end
 end

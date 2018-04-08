@@ -5,14 +5,19 @@ functor AsyncServer (
     structure AsyncIO: ASYNCIO
     structure HttpParser: HTTPPARSER
     structure Reader: READER
-): ASYNCSERVER =
+) =
 struct
 
     type REQUEST = HttpParser.REQUEST
     type RESPONSE = HttpParser.RESPONSE
     val eventQueue = Eventloop.initQueue()
-    type EVENT = Eventloop.EVENT
     val read = Reader.initReader()
+
+
+    type EVENT = Eventloop.EVENT
+    val EventDoing = Eventloop.Doing
+    val EventDone  = Eventloop.Done
+    val EventEmpty = Eventloop.Empty
 
 
     fun loop mainSock connSocks app eq = let
