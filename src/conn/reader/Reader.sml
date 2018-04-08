@@ -1,4 +1,19 @@
 structure Reader: READER =
 struct
-    fun initReader () sockDesc = "fuck"
+
+
+
+
+    fun initReader () = let
+        val bufStore = []
+        fun read desc s = let
+        in
+        end
+    in
+        read
+    end
+
+
+
+
 end

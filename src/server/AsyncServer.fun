@@ -23,9 +23,9 @@ struct
     fun loop mainSock connSocks app eq = let
         val newConnSocks = case AsyncConn.accept mainSock 
                                 of NONE => connSocks 
-                                 | SOME (s, sa) => (s :: connSocks)
-        val {rds, wrs, exs} = AsyncIO.select newConnSocks;
-        val msgs = map (fn sock => (read sock, sock)) rds;
+                                 | SOME (s, sa) => (s :: connSocks);
+        val {rds, wrs, exs, rdsDescs, wrsDescs, exsDescs} = AsyncIO.select newConnSocks;
+        val msgs = map (fn (desc, s) => (read desc s, s)) rdsDescs;
         val requests = map (fn (msg, sock) => (HttpParser.parse msg, sock)) msgs
         val events = map (fn (req, sock) => app req) requests
         val newQueue = Eventloop.append eq events;
