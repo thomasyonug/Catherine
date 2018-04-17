@@ -1,3 +1,0 @@
-signature SELECT =
-sig
-end

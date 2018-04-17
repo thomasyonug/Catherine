@@ -1,31 +1,8 @@
 Group 
 
-    structure Catherine
-    structure StringDict
-
 is
     $/basis.cm
     ./src/main.sml
-    ./src/server/AsyncServer.sig
-    ./src/server/AsyncServer.fun
-
-    ./src/poll/ThreadPoll.sig
-
-    ./src/httpParser/HttpParser.sig
-    ./src/httpParser/HttpParser.sml
-
-    ./src/conn/async/AsyncConn.sig
-    ./src/conn/async/AsyncConn.sml
-
-    ./src/conn/async/eventloop/Eventloop.sig
-    ./src/conn/async/eventloop/Eventloop.sml
-
-    ./src/conn/ioMultiplexing/AsyncIO.sig
-    ./src/conn/ioMultiplexing/AsyncIO.sml
-
-    ./src/conn/ioMultiplexing/Select.sig
-    ./src/conn/reader/Reader.sig
-    ./src/conn/reader/Reader.sml
 
 
 
