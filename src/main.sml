@@ -1,7 +1,3 @@
-(* structure Catherine = AsyncServer(
-    structure Eventloop = Eventloop
-    structure AsyncConn = AsyncConn
-    structure AsyncIO = AsyncIO
+structure Catherine = ServerFunctor(
     structure HttpParser = HttpParser
-    structure Reader = Reader
-) *)
+)

@@ -1,8 +1,12 @@
 Group 
-
+    structure Catherine
 is
     $/basis.cm
     ./src/main.sml
+    ./src/server/server.fun
+
+    ./src/httpParser/HttpParser.sig
+    ./src/httpParser/HttpParser.sml
 
 
 

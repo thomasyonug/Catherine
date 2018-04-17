@@ -1,10 +1,5 @@
 
+val vec = Word8Vector.fromList [];
 
-structure a =
-struct
-    infix |> ;
-    fun (a |> b) = a + b; 
-end
-
-
+(print o Int.toString o Word8Vector.length) vec
 
