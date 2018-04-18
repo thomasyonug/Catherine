@@ -13,6 +13,8 @@ struct
 
     type RESPONSE = {}
 
+    val CRLF = "\r\n"
+
 
 
     fun headerParse [] = StringDict.empty
@@ -38,7 +40,7 @@ struct
 
 
     fun parse str = let
-        val msgLines = StringExt.split str "\r\n"
+        val msgLines = StringExt.split str CRLF
         val (heads, body) = let
             val index = case ListExt.findIndex (fn item => item = "") msgLines 
                             of SOME i => i
@@ -46,7 +48,7 @@ struct
         in
             (
                 List.take (msgLines, index),
-                (ListExt.join o List.drop) (msgLines, index) "\r\n"
+                (ListExt.join o List.drop) (msgLines, index) CRLF
             )
         end
 
