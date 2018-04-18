@@ -4,6 +4,7 @@ functor ServerFunctor (
 struct
 
     structure Process = Posix.Process
+    structure Response = Response
 
 
 
@@ -25,7 +26,7 @@ struct
                     val request = HttpParser.parse msg      
                 in
                     Socket.close masterSock;
-                    app request;
+                    app (request, Response.new ());
                     Socket.close workSock;
                     Process.exit(Word8.fromInt 0)
                 end

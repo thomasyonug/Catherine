@@ -3,7 +3,7 @@ structure Test =
 struct
 
 
-    fun run () = Catherine.listen 9999 (fn req => (
+    fun run () = Catherine.listen 9999 (fn (req, res) => (
         let
             val map = (#getHeader req)
             val body = (#getBody req) ()

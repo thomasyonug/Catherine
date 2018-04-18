@@ -11,8 +11,6 @@ struct
         primitive: string
     }
 
-    type RESPONSE = {}
-
     val CRLF = "\r\n"
 
 

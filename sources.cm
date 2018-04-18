@@ -7,7 +7,10 @@ is
     $/regexp-lib.cm
     $/pp-lib.cm
     ./src/main.sml
+
+
     ./src/server/server.fun
+    ./src/server/response.sml
 
     ./src/httpParser/HttpParser.sig
     ./src/httpParser/HttpParser.sml
