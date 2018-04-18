@@ -39,11 +39,22 @@ struct
 
     fun parse str = let
         val msgLines = StringExt.split str "\r\n"
+        val (heads, body) = let
+            val index = case ListExt.findIndex (fn item => item = "") msgLines 
+                            of SOME i => i
+                             | NONE => List.length msgLines;
+        in
+            (
+                List.take (msgLines, index),
+                (ListExt.join o List.drop) (msgLines, index) "\r\n"
+            )
+        end
+
     in
         let
-            val headerDict = headerParse msgLines;
+            val headerDict = headerParse heads;
             fun getHeader field = StringDict.get (headerDict, field) 
-            fun getBody () = "str"
+            fun getBody () = body
         in
             {
                 getHeader = getHeader,

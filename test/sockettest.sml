@@ -6,14 +6,17 @@ struct
     fun run () = Catherine.listen 9999 (fn req => (
         let
             val map = (#getHeader req)
+            val body = (#getBody req) ()
+            val primi = #primitive req
         in
-            print (map "method");
             print "\n";
-            print (map "route");
             print "\n";
-            print (map "protocol");
             print "\n";
-            print (#primitive req);
+            print "\n";
+            print "\n";
+            print "\n";
+            print "\n";
+            print body;
             print "\n"
         end
     ))
