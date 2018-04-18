@@ -29,5 +29,12 @@ struct
               | EQUAL => Bran(a, y, t1, t2)
               | LESS => Bran(a, x, t1, set(t2, b, y));
 
+        fun toList dict = let
+            fun core Leaf = []
+              | core (Bran(key, value, left, right)) = [(key, value)] @ (core left) @ (core right)
+        in
+            core dict 
+        end
+
     end
 end

@@ -6,7 +6,6 @@ struct
     val compare = String.compare
 end
 
-
 structure StringDict = Dictionary(StringOrder)
 
 

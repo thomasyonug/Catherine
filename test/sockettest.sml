@@ -1,23 +1,26 @@
 
+structure Test =
+struct
 
-fun main () = let
-    val sock = INetSock.TCP.socket();
-    fun loop () = let
-        val (s, sa) = Socket.accept sock
-        val () = print "comming";
-        fun w () = (
-            Socket.close s;
-            Socket.Ctl.getSockName s;
-            w()
-        )
 
+    fun run () = Catherine.listen 9999 (fn req => (
+        let
+            val map = (#getHeader req)
+        in
+            print (map "method");
+            print "\n";
+            print (map "route");
+            print "\n";
+            print (map "protocol");
+            print "\n";
+            print (#primitive req);
+            print "\n"
+        end
+    ))
+
+    fun fuck () = let
     in
-        w ()
+        ListExt.join ["hello", "fuck", "nimabi"] "," 
     end
-in
-    Socket.bind (sock, INetSock.any 9999);
-    Socket.listen (sock, 5);
-    loop ()
+
 end
-
-

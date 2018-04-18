@@ -1,7 +1,11 @@
 Group 
     structure Catherine
+    structure Test
+    structure StringDict
 is
     $/basis.cm
+    $/regexp-lib.cm
+    $/pp-lib.cm
     ./src/main.sml
     ./src/server/server.fun
 
@@ -12,4 +16,11 @@ is
 
     ./src/util/dictionary/Dictionary.fun
     ./src/util/dictionary/stringDict.sml
+    ./src/util/Regex/Re.sml
     ./src/util/order.sig
+    ./src/util/ListExt.sml
+    ./src/util/StringExt.sml
+
+
+
+    ./test/sockettest.sml

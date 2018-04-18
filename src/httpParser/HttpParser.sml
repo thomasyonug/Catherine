@@ -2,6 +2,8 @@
 structure HttpParser: HTTPPARSER =
 struct
 
+    infix |>;
+    fun (d |> (k, v)) = StringDict.set (d, k, v);
 
     type REQUEST = {
         getHeader: string -> string,
@@ -13,11 +15,15 @@ struct
 
 
 
-    fun headerParse msgLines = let
-        val dict = StringDict.empty;
-        val (line::lines) = msgLines
+    fun headerParse [] = StringDict.empty
+      | headerParse (line::lines) = let
+        val msgLines = line :: lines
+        val (method::route::protocol::_) = String.tokens (fn c => c = #" ") line
+        val dict = StringDict.empty
+                    |> ("method", method)
+                    |> ("route", route)
+                    |> ("protocol", protocol);
     in
-
         List.foldl (fn (line, dict) => 
             let
                 val (k::vs) = String.tokens (fn c => c = #":") line
@@ -32,11 +38,11 @@ struct
 
 
     fun parse str = let
-        val msgLines = String.tokens(fn c => c = #"\t") str;
+        val msgLines = StringExt.split str "\r\n"
     in
         let
             val headerDict = headerParse msgLines;
-            fun getHeader field = "todo" 
+            fun getHeader field = StringDict.get (headerDict, field) 
             fun getBody () = "str"
         in
             {
