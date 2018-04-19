@@ -6,6 +6,49 @@ struct
     structure Process = Posix.Process
     structure Response = Response
 
+    fun send sock (response: Response.t) = let
+        val {
+            protocol,
+            status,
+            statusDesc,
+            header,
+            body,
+            ...
+        } = response
+        val vProtocol = !protocol
+        and vStatus = !status
+        and vStatusDesc = !statusDesc
+        and vHeader = !header
+        and vBody = !body
+        fun connect lst = let
+            fun core [] result = result
+              | core (x::xs) result = core xs (result ^ x)
+        in
+            core lst ""
+        end
+        val v = fn x => Option.getOpt (x, "")
+        val blank = " "
+        val CRLF = HttpParser.CRLF
+        val res = connect (
+            [
+                v vProtocol,
+                blank,
+                v vStatus,
+                blank,
+                v vStatusDesc,
+                CRLF
+            ] @ 
+            (
+                map (fn (k, v) => k ^ ": " ^ v ^ CRLF) (StringDict.toList vHeader)
+            ) @ 
+            [
+                CRLF,
+                v vBody
+            ]
+        )
+    in
+        Socket.sendVec (sock, Word8VectorSlice.full (Byte.stringToBytes res))
+    end
 
 
     fun receive workSock = let
@@ -24,9 +67,11 @@ struct
             of NONE => let
                     val msg = receive workSock
                     val request = HttpParser.parse msg      
+                    val response = Response.new()
                 in
                     Socket.close masterSock;
-                    app (request, Response.new ());
+                    app (request, response);
+                    send workSock response;
                     Socket.close workSock;
                     Process.exit(Word8.fromInt 0)
                 end

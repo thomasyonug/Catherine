@@ -9,15 +9,10 @@ struct
             val body = (#getBody req) ()
             val primi = #primitive req
         in
-            print "\n";
-            print "\n";
-            print "\n";
-            print "\n";
-            print "\n";
-            print "\n";
-            print "\n";
-            print body;
-            print "\n"
+            (#setProtocol res) "HTTP/1.1";
+            (#setStatus res) "200";
+            (#setStatusDesc res) "OK";
+            (#setBody res) "hello world"
         end
     ))
 
