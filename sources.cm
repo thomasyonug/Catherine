@@ -1,5 +1,6 @@
 Group 
     structure Catherine
+    structure Web
     structure Test
     structure StringDict
 is
@@ -27,3 +28,12 @@ is
 
 
     ./test/sockettest.sml
+
+
+
+
+
+
+
+    ./web/Web.sml
+    ./web/static/Static.sml

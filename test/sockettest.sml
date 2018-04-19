@@ -3,7 +3,7 @@ structure Test =
 struct
 
 
-    fun run () = Catherine.listen 9999 (fn (req, res) => (
+    fun run () = Catherine.listen 9999 (fn (req, res, done) => (
         let
             val map = (#getHeader req)
             val body = (#getBody req) ()
@@ -17,8 +17,11 @@ struct
     ))
 
     fun fuck () = let
+        val regexes = [
+          ("html$", fn match => "text/html;charset=utf-8")
+        ]
     in
-        ListExt.join ["hello", "fuck", "nimabi"] "," 
+        Option.getOpt(StringCvt.scanString (Re.match regexes) "sdf.html", "text/plain")
     end
 
 end

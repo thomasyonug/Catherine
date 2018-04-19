@@ -5,6 +5,7 @@ struct
 
     structure Process = Posix.Process
     structure Response = Response
+    structure Continuation = SMLofNJ.Cont
 
     fun send sock (response: Response.t) = let
         val {
@@ -47,6 +48,7 @@ struct
             ]
         )
     in
+        (* print res; *)
         Socket.sendVec (sock, Word8VectorSlice.full (Byte.stringToBytes res))
     end
 
@@ -70,7 +72,10 @@ struct
                     val response = Response.new()
                 in
                     Socket.close masterSock;
-                    app (request, response);
+
+
+                    Continuation.callcc (fn cc => app (request, response, fn () => Continuation.throw cc ()));
+
                     send workSock response;
                     Socket.close workSock;
                     Process.exit(Word8.fromInt 0)
