@@ -15,13 +15,13 @@ struct
           )
         in
           defaultHead();
-          handler (headerGetter "route") (#setBody res) (#setHeader res) done
+          handler (headerGetter "route") res done
         end 
-        handle e => let
+        (* handle e => let
         in
             (#setStatus res) "500";
             (#setStatusDesc res) "error"
-        end
+        end *)
     ))
 
 end
