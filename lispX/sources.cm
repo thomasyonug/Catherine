@@ -1,0 +1,16 @@
+Group is 
+
+./absyn.sml
+./parse.sml
+./lexer.lex
+./grm.grm
+./errormsg.sml
+./lispX.sml
+./eval.sml
+
+
+
+
+$/smlnj-lib.cm
+$/ml-yacc-lib.cm
+$/basis.cm

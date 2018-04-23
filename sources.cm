@@ -37,3 +37,6 @@ is
 
     ./web/Web.sml
     ./web/static/Static.sml
+
+
+    ./lispX/sources.cm

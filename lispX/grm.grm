@@ -1,0 +1,103 @@
+structure A = Absyn
+
+
+%%
+
+%term
+    EOF
+    | NUMBER of int
+    | XMLCONTENT of string
+    | DIV | MUL | PLUS | MINUS
+    | DEFINE
+    | ID of string
+    | LEFTPARENTHESIS
+    | RIGHTPARENTHESIS
+    | LAMBDA
+    | NIL
+    | COND
+    | GT
+    | LT
+    | EQ
+    | CLOSETAG of string
+    | OPENTAG of string
+
+
+
+%nonterm
+    program of A.exp list
+    | explst of A.exp list
+    | exp of A.exp
+    | operator of A.exp
+    | args of A.var list
+    | IDs of A.var list
+    | BRANCHES of A.exp
+    | xmls of A.exp list
+    | xml of A.exp
+
+
+%pos int
+%start program
+%eop EOF
+%noshift EOF
+%name TinyScheme
+
+
+%keyword DIV MUL PLUS MINUS LEFTPARENTHESIS RIGHTPARENTHESIS DEFINE LAMBDA COND LT GT EQ
+
+%%
+
+
+program
+    : explst                (explst)
+    | xmls                  (xmls)
+
+xmls
+    : xml                       ([xml])
+    | xml xmls                  (xml::xmls)
+    | exp xmls                    (exp::xmls)
+
+
+xml
+    : OPENTAG xmls CLOSETAG        (A.XmlExp {tagName=OPENTAG, children=xmls})
+    | OPENTAG CLOSETAG             (A.XmlExp {tagName=OPENTAG, children=[A.NilExp]})
+    | XMLCONTENT                        (A.XmlContentExp XMLCONTENT)
+    | ID                                (A.XmlContentExp ID)
+    | exp                               (exp)
+
+explst
+    : exp                       ([exp])
+    | exp explst                (exp :: explst)
+    | xml explst                (xml::explst)
+
+exp
+    : NUMBER                                                (A.NumberExp NUMBER)
+    | LEFTPARENTHESIS xml RIGHTPARENTHESIS                  (xml)
+    | LEFTPARENTHESIS exp RIGHTPARENTHESIS                  (exp)
+    | LEFTPARENTHESIS operator RIGHTPARENTHESIS             (operator)
+    | LEFTPARENTHESIS LAMBDA args explst RIGHTPARENTHESIS   (A.LambdaExp {args=args, body=explst})
+    | LEFTPARENTHESIS COND BRANCHES RIGHTPARENTHESIS        (BRANCHES)
+    | LEFTPARENTHESIS DEFINE ID exp RIGHTPARENTHESIS        (A.DefineExp {symbol=A.ID ID, value=exp})
+
+BRANCHES
+    : LEFTPARENTHESIS exp exp RIGHTPARENTHESIS              (A.CondExp [(exp1, exp2)])
+    | LEFTPARENTHESIS exp exp RIGHTPARENTHESIS BRANCHES     (
+        case BRANCHES of A.CondExp lst => A.CondExp ((exp1, exp2)::lst)
+    )
+
+args
+    : LEFTPARENTHESIS IDs RIGHTPARENTHESIS              (IDs)
+    | LEFTPARENTHESIS RIGHTPARENTHESIS                  ([])
+
+IDs
+    : ID IDs                                            ((A.ID ID)::IDs)
+    | ID                                                ([A.ID ID])
+
+operator
+    : MUL exp exp                   (A.operatorExp {first=exp1, second=exp2, operator=A.MUL})
+    | DIV exp exp                   (A.operatorExp {first=exp1, second=exp2, operator=A.DIV})
+    | PLUS exp exp                  (A.operatorExp {first=exp1, second=exp2, operator=A.PLUS})
+    | MINUS exp exp                 (A.operatorExp {first=exp1, second=exp2, operator=A.MINUS})
+    | LT exp exp                    (A.operatorExp {first=exp1, second=exp2, operator=A.LT})
+    | GT exp exp                    (A.operatorExp {first=exp1, second=exp2, operator=A.GT})
+    | EQ exp exp                    (A.operatorExp {first=exp1, second=exp2, operator=A.EQ})
+
